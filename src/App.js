@@ -1,28 +1,41 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import web3 from './utils/InitWeb3'
+import {fundingFactoryInstance} from './eth/instance'
+import TabCenter from "./display/TabCenter";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    constructor() {
+        super();
+
+        this.state = {
+            currentAccount: '',
+        }
+    }
+
+    async componentWillMount() {
+        let accounts = await web3.eth.getAccounts()
+        console.log(accounts)
+
+        let platformManager = await fundingFactoryInstance.methods.platformManager().call()
+        console.log('manager :', platformManager)
+
+        this.setState({
+            currentAccount: accounts[0],
+        })
+    }
+
+
+    render() {
+        return (
+            <div>
+                <h1>区块链众筹</h1>
+                <img src="https://api.gushi.ci/all.svg" alt="poem"/>
+                <br/><br/>
+                <p>Current account : {this.state.currentAccount}</p>
+                <TabCenter/>
+            </div>
+        );
+    }
 }
 
 export default App;
