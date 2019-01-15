@@ -1,34 +1,56 @@
 import {fundingFactoryInstance, newFundingInstance} from "./instance";
+import web3 from '../utils/InitWeb3'
 
-let getCreatorFundingDetails = async () => {
+let getFundingDetails = async (index) => {
 
-//funding地址的数组
-    let creatorFundings = await
-        fundingFactoryInstance.methods.getCreatorFundings().call()
-// console.table(creatorFundings)
+    let accounts = await web3.eth.getAccounts()
 
-    let detailsPromises = creatorFundings.map(function (fundingAddress) {
-        // console.log(fundingAddress)
+    let currentFundings = []
+    if (index === 1) {
+        //所有的
+        currentFundings = await fundingFactoryInstance.methods.getAllFundings().call({
+            from: accounts[0]
+        })
+    } else if (index === 2) {
+        //我发起
+        currentFundings = await fundingFactoryInstance.methods.getCreatorFundings().call({
+            from: accounts[0]
+        })
+
+    } else if (index === 3) {
+        //我参与的
+        currentFundings = await fundingFactoryInstance.methods.getSupportorFunding().call({
+            from: accounts[0]
+        })
+
+    } else {
+
+    }
+    let detailsPromises = currentFundings.map(function (fundingAddress) {
+        console.log(fundingAddress)
+        //1. 把Funding实例拿过来
 
         return new Promise(async (resolve, reject) => {
-
+            //2. 对实例进行填充地址，可以使用了
+            //这个instance是只有一个，后面的地址把前面的地址覆盖了，导致每次只能获取到最后一个合约的详情
+            //解决办法：每一个地址来的时候，都创建一个新的合约实例。
+            // fundingInstance.options.address = fundingAddress
             try {
                 let newInstance = newFundingInstance()
                 newInstance.options.address = fundingAddress
 
-                let manager = await
-                    newInstance.methods.manager().call()
-                let projectName = await
-                    newInstance.methods.projectName().call()
-                let targetMoney = await
-                    newInstance.methods.targetMoney().call()
-                let supportMoney = await
-                    newInstance.methods.supportMoney().call()
-                let leftTime = await
-                    newInstance.methods.getLeftTime().call()
+
+                //3. 调用方法，返回funding合约的详情
+                let manager = await newInstance.methods.manager().call()
+                let projectName = await newInstance.methods.projectName().call()
+                let targetMoney = await newInstance.methods.targetMoney().call()
+                let supportMoney = await newInstance.methods.supportMoney().call()
+                let leftTime = await newInstance.methods.getLeftTime().call()
 
                 let balance = await newInstance.methods.getBalance().call()
+
                 let investorCount = await newInstance.methods.getInvestorsCount().call()
+
 
                 let detail = {
                     fundingAddress,
@@ -42,24 +64,62 @@ let getCreatorFundingDetails = async () => {
                 }
 
                 // console.table(detail)
+                // console.log('00000000')
+
                 resolve(detail)
             } catch (e) {
                 reject(e)
             }
         })
-
     })
 
-//把多个promise处理成一个promise
-    let detailInfo = Promise.all(detailsPromises)
+    // console.log('11111111111')
+    // console.log('details:', detailsPromises)
 
-    // detailInfo.then(detail => {
-    //     console.table(detail)
-    // })
+    //把多个promise处理成一个promise
+    let detailInfo = Promise.all(detailsPromises)
 
     return detailInfo
 }
 
+let createFunding = (projectName, targetMoney, supportMoney, duration) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let accounts = await web3.eth.getAccounts()
+            let res = await fundingFactoryInstance.methods.createFunding(projectName, targetMoney, supportMoney, duration).send({
+                    from: accounts[0],
+                }
+            )
+            resolve(res)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let handleInvestFunc = (fundingAddress, supportMoney) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let fundingInstance = newFundingInstance();
+            fundingInstance.options.address = fundingAddress
+
+            let accounts = await web3.eth.getAccounts()
+
+            let res = await fundingInstance.methods.invest().send({
+                from: accounts[0],
+                value: supportMoney,
+            })
+
+            resolve(res)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+
 export {
-    getCreatorFundingDetails,
+    getFundingDetails,
+    createFunding,
+    handleInvestFunc,
 }

@@ -7,9 +7,11 @@ const CardList = (props) => {
     let details = props.details
     // console.log(details.)
 
+    let onCardClick = props.onCardClick
     let cards = details.map(detail => {
         return <CardFunding key={detail.fundingAddress}
                             detail={detail}
+                            onCardClick={onCardClick}
 
         />
     })
@@ -25,6 +27,8 @@ const CardList = (props) => {
 
 const CardFunding = (props) => {
     let detail = props.detail
+
+    let onCardClick = props.onCardClick
 
     let {
         fundingAddress,
@@ -42,7 +46,7 @@ const CardFunding = (props) => {
 
     return (
 
-        <Card>
+        <Card onClick={() => onCardClick(detail)}>
             <Image src={src}/>
             <Card.Content>
                 <Card.Header>{projectName}</Card.Header>
