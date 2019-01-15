@@ -1,29 +1,28 @@
 import React, {Component} from 'react';
-
-import {fundingFactoryInstance} from "../../eth/instance";
+import {getCreatorFundingDetails} from "../../eth/interaction";
+import CardList from "../common/CardList";
 
 class CreatorFundingTab extends Component {
 
     state = {
-        creatorFundings: [],
+        creatorFundingDetails: [],
     }
 
 
     async componentWillMount() {
-        //funding地址的数组
-        let creatorFundings = await fundingFactoryInstance.methods.getCreatorFundings().call()
-        console.table(creatorFundings)
 
+        let creatorFundingDetails = await getCreatorFundingDetails()
+        // console.table(creatorFundingDetails)
 
         this.setState({
-            creatorFundings,
+            creatorFundingDetails,
         })
 
     }
 
     render() {
         return (
-            <p>{this.state.creatorFundings}</p>
+            <CardList details={this.state.creatorFundingDetails}/>
         )
     }
 }

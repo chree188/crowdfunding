@@ -8,7 +8,7 @@ let HDWalletProvider = require('truffle-hdwallet-provider')
 let web3 = new Web3()
 //3. 设置网络
 
-let terms = 'elegant axis buyer puppy shell depart machine rent normal draft sail woman'
+let terms = 'work broccoli fluid dune dragon coral frog shell few price skate grape'
 
 let netIp = 'http://127.0.0.1:7545'
 

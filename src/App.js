@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import web3 from './utils/InitWeb3'
 import {fundingFactoryInstance} from './eth/instance'
 import TabCenter from "./display/TabCenter";
+import {Header} from 'semantic-ui-react'
 
 class App extends Component {
     constructor() {
@@ -14,10 +15,10 @@ class App extends Component {
 
     async componentWillMount() {
         let accounts = await web3.eth.getAccounts()
-        console.log(accounts)
+        // console.log(accounts)
 
         let platformManager = await fundingFactoryInstance.methods.platformManager().call()
-        console.log('manager :', platformManager)
+        // console.log('manager :', platformManager)
 
         this.setState({
             currentAccount: accounts[0],
@@ -28,7 +29,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <h1>区块链众筹</h1>
+                <Header as='h1' color='Black'>BlockChain Crowdfunding</Header>
                 <img src="https://api.gushi.ci/all.svg" alt="poem"/>
                 <br/><br/>
                 <p>Current account : {this.state.currentAccount}</p>
