@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="JSX" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="E:\DevTools\apache-maven-3.5.3\repository" />
+        <option name="mavenHome" value="E:/DevTools/apache-maven-3.5.3" />
+        <option name="userSettingsFile" value="E:\DevTools\apache-maven-3.5.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="vmOptions" value="-DarchetypeCatalog=local" />
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/src/App.css" />
+    <file url="file://$PROJECT_DIR$/src/App.test.js" />
+    <file url="file://$PROJECT_DIR$/src/index.css" />
+    <file url="file://$PROJECT_DIR$/src/logo.svg" />
+    <file url="file://$PROJECT_DIR$/src/serviceWorker.js" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

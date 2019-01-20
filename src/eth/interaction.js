@@ -97,6 +97,25 @@ let createFunding = (projectName, targetMoney, supportMoney, duration) => {
     })
 }
 
+const createRequest = (fundingAddress, purpose, cost, seller) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let accounts = await web3.eth.getAccounts();
+
+            let fundingContract = newFundingInstance();
+            fundingContract.options.address = fundingAddress;
+
+            let result = await fundingContract.methods.createRequest(purpose, cost, seller).send({
+                from: accounts[0],
+            });
+
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 let handleInvestFunc = (fundingAddress, supportMoney) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -117,9 +136,84 @@ let handleInvestFunc = (fundingAddress, supportMoney) => {
     })
 }
 
+const showRequests = (fundingAddress) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let accounts = await web3.eth.getAccounts();
+            let fundingContract = newFundingInstance()
+            fundingContract.options.address = fundingAddress;
+
+            //获取花费请求的数量
+            let requestCount = await fundingContract.methods.getRequestsCount().call({
+                from: accounts[0],
+            });
+
+            let requestDetails = [];
+            //遍历请求数量，依次获取每一个请求的详情，添加到数组中，最后使用promise返回
+            for (let i = 0; i < requestCount; i++) {
+                let requestDetail = await fundingContract.methods.getRequestByIndex(i).call({
+                    from: accounts[0],
+                });
+
+                requestDetails.push(requestDetail);
+            }
+            resolve(requestDetails);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+
+const approveRequest = (fundingAddress, index) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const contract = newFundingInstance()
+            contract.options.address = fundingAddress;
+
+            const result = await contract.methods.approveRequest(index).send({
+                from: accounts[0],
+            });
+
+            console.log('result :', result);
+
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    })
+};
+
+const finalizeRequest = (fundingAddress, index) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const contract = newFundingInstance()
+            contract.options.address = fundingAddress;
+
+            const result = await contract.methods.finalizeRequest(index).send({
+                from: accounts[0],
+            });
+
+            console.log('result :', result);
+
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 
 export {
     getFundingDetails,
     createFunding,
     handleInvestFunc,
+    createRequest,
+    showRequests,
+    approveRequest,
+    finalizeRequest,
 }

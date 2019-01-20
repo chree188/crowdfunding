@@ -2,7 +2,7 @@ import web3 from '../utils/InitWeb3'
 
 let factoryABI = [ { "constant": true, "inputs": [], "name": "platformManager", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_name", "type": "string" }, { "name": "_targetMoney", "type": "uint256" }, { "name": "_supportMoney", "type": "uint256" }, { "name": "_duration", "type": "uint256" } ], "name": "createFunding", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "getAllFundings", "outputs": [ { "name": "", "type": "address[]" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getSupportorFunding", "outputs": [ { "name": "", "type": "address[]" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getCreatorFundings", "outputs": [ { "name": "", "type": "address[]" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ]
 
-let factoryAddress = '0xb0D73F7C0FC7420da00Af286D0cDBF476C02e849'
+let factoryAddress = '0xfCe7F63dc51f1588FC5F03C75d55034f80db99Dd'
 
 let fundingFactoryInstance = new web3.eth.Contract(factoryABI,factoryAddress)
 

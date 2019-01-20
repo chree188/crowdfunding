@@ -36,6 +36,8 @@ class CreateFundingForm extends Component {
 
         return (
             <div>
+                <br></br>
+                <h3>创建合约</h3>
                 <Dimmer.Dimmable as={Segment} dimmed={active}>
                     <Dimmer active={active} inverted>
                         <Loader>Loading</Loader>
